@@ -1,5 +1,6 @@
 pipeline {
   agent any
+
   stages {
     stage('Checkout') {
       steps {
@@ -35,5 +36,14 @@ pipeline {
         //sh 'npm audit || true' // This will show known CVEs in the output
       }
     }
+    
+    stage('SonarCloud Analysis') {
+      steps {
+        withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+            bat 'sonar-scanner -Dsonar.token=%SONAR_TOKEN%'
+        }
+        //bat 'npm test || exit /B 0' // For Windows compatibility
+        //sh 'npm test || true' // Unix - Allows pipeline to continue despite test failures
+      }
   }
 }
