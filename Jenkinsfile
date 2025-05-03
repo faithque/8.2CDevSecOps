@@ -45,5 +45,6 @@ pipeline {
         //bat 'npm test || exit /B 0' // For Windows compatibility
         //sh 'npm test || true' // Unix - Allows pipeline to continue despite test failures
       }
+    }
   }
 }
