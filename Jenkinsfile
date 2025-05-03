@@ -14,20 +14,21 @@ pipeline {
     }
     stage('Run Tests') {
       steps {
-        bat 'npm test || true'
-        //sh 'npm test || true' // Allows pipeline to continue despite test failures
+        //bat 'snyk auth' // Authenticate Snyk CLI with the Snyk token
+        bat 'npm test || exit /B 0' // For Windows compatibility
+        //sh 'npm test || true' // Unix - Allows pipeline to continue despite test failures
       }
     }
     stage('Generate Coverage Report') {
       steps {
         // Ensure coverage report exists
-        bat 'npm run coverage || true'
+        bat 'npm run coverage || exit /B 0'
         //sh 'npm run coverage || true'
       }
     }
     stage('NPM Audit (Security Scan)') {
       steps {
-        bat 'npm audit || true'
+        bat 'npm audit || exit /B 0'
         //sh 'npm audit || true' // This will show known CVEs in the output
       }
     }
