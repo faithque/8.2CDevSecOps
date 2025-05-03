@@ -14,8 +14,11 @@ pipeline {
     }
     stage('Run Tests') {
       steps {
-        //bat 'snyk auth' // Authenticate Snyk CLI with the Snyk token
-        bat 'npm test || exit /B 0' // For Windows compatibility
+        withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+            bat 'snyk auth %SNYK_TOKEN%'
+            bat 'npm test || exit /B 0'
+        }
+        //bat 'npm test || exit /B 0' // For Windows compatibility
         //sh 'npm test || true' // Unix - Allows pipeline to continue despite test failures
       }
     }
